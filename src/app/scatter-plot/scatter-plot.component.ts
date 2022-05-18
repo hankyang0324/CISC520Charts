@@ -19,12 +19,12 @@ import * as Highcharts from 'highcharts';
 export class ScatterPlotComponent implements OnInit, AfterViewInit, OnChanges {
 	@ViewChild('scatterPlotContainer') chartContainer: ElementRef;
 	@Input() data: any[];
-	@Input() title = 'SPY & 10-2 Year Treasury Yield';
-	@Input() yLabel = 'SPY';
+	@Input() title = 'S&P & 10-2 Year Treasury Yield';
+	@Input() yLabel = 'S&P';
 	@Input() xLabel = '10-2 Year';
 	@Input() unit = 'day';
 	chart: any;
-	spyColor = '#0066CC';
+	snpColor = '#0066CC';
 	yieldColor = '#EE0000';
 	option: any = {
 		chart: {
@@ -58,7 +58,7 @@ export class ScatterPlotComponent implements OnInit, AfterViewInit, OnChanges {
 			title: {
 				text: this.yLabel,
 				style: {
-					color: this.spyColor,
+					color: this.snpColor,
 				},
 			},
 			labels: {
@@ -66,7 +66,7 @@ export class ScatterPlotComponent implements OnInit, AfterViewInit, OnChanges {
 					return this.value;
 				},
 				style: {
-					color: this.spyColor,
+					color: this.snpColor,
 				},
 			},
 		},
@@ -118,7 +118,7 @@ export class ScatterPlotComponent implements OnInit, AfterViewInit, OnChanges {
 					return `
 						<div>Bear Market Start Time: ${this.point.time}</div>
 						<div style="color: #EE0000">Negative 10-2 Year: ${this.x} days</div>
-						<div style="color: #0066CC">SPY Bear Market: ${this.y} days</div>
+						<div style="color: #0066CC">S&P Bear Market: ${this.y} days</div>
 					`;
 				};
 				this.option.xAxis.labels.formatter = function () {
@@ -132,7 +132,7 @@ export class ScatterPlotComponent implements OnInit, AfterViewInit, OnChanges {
 					return `
 						<div>Bear Market Start Time: ${this.point.time}</div>
 						<div style="color: #EE0000">Max 10-2 Year Yield (Negative): ${this.x}%</div>
-						<div style="color: #0066CC">SPY Biggest Drop: ${this.y}%</div>
+						<div style="color: #0066CC">S&P Biggest Drop: ${this.y}%</div>
 					`;
 				};
 				this.option.xAxis.labels.formatter = function () {
@@ -146,7 +146,7 @@ export class ScatterPlotComponent implements OnInit, AfterViewInit, OnChanges {
 					return `
 						<div>Bear Market Start Time: ${this.point.time}</div>
 						<div style="color: #EE0000">Negative 10-2 Year: ${this.x} days</div>
-						<div style="color: #0066CC">SPY Biggest Drop: ${this.y}%</div>
+						<div style="color: #0066CC">S&P Biggest Drop: ${this.y}%</div>
 					`;
 				};
 				this.option.xAxis.labels.formatter = function () {
@@ -160,7 +160,7 @@ export class ScatterPlotComponent implements OnInit, AfterViewInit, OnChanges {
 					return `
 						<div>Bear Market Start Time: ${this.point.time}</div>
 						<div style="color: #EE0000">Max 10-2 Year Rate (Negative): ${this.x}%</div>
-						<div style="color: #0066CC">SPY Bear Market: ${this.y} days</div>
+						<div style="color: #0066CC">S&P Bear Market: ${this.y} days</div>
 					`;
 				};
 				this.option.xAxis.labels.formatter = function () {
@@ -188,7 +188,7 @@ export class ScatterPlotComponent implements OnInit, AfterViewInit, OnChanges {
 					return `
 						<div>Bear Market Start Time: ${this.point.time}</div>
 						<div style="color: #EE0000">Negative 10-2 Year: ${this.x} days</div>
-						<div style="color: #0066CC">SPY Bear Market: ${this.y} days</div>
+						<div style="color: #0066CC">S&P Bear Market: ${this.y} days</div>
 					`;
 				};
 				this.option.xAxis.labels.formatter = function () {
@@ -202,7 +202,7 @@ export class ScatterPlotComponent implements OnInit, AfterViewInit, OnChanges {
 					return `
 						<div>Bear Market Start Time: ${this.point.time}</div>
 						<div style="color: #EE0000">Max 10-2 Year Rate (Negative): ${this.x}%</div>
-						<div style="color: #0066CC">SPY Biggest Drop: ${this.y}%</div>
+						<div style="color: #0066CC">S&P Biggest Drop: ${this.y}%</div>
 					`;
 				};
 				this.option.xAxis.labels.formatter = function () {
@@ -216,7 +216,7 @@ export class ScatterPlotComponent implements OnInit, AfterViewInit, OnChanges {
 					return `
 						<div>Bear Market Start Time: ${this.point.time}</div>
 						<div style="color: #EE0000">Negative 10-2 Year: ${this.x} days</div>
-						<div style="color: #0066CC">SPY Biggest Drop: ${this.y}%</div>
+						<div style="color: #0066CC">S&P Biggest Drop: ${this.y}%</div>
 					`;
 				};
 				this.option.xAxis.labels.formatter = function () {
@@ -230,7 +230,7 @@ export class ScatterPlotComponent implements OnInit, AfterViewInit, OnChanges {
 					return `
 						<div>Bear Market Start Time: ${this.point.time}</div>
 						<div style="color: #EE0000">Max 10-2 Year Rate (Negative): ${this.x}%</div>
-						<div style="color: #0066CC">SPY Bear Market: ${this.y} days</div>
+						<div style="color: #0066CC">S&P Bear Market: ${this.y} days</div>
 					`;
 				};
 				this.option.xAxis.labels.formatter = function () {

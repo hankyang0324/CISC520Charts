@@ -13,14 +13,13 @@ export class AppComponent implements OnInit {
 	data: any[];
 	yieldBand = [];
 	mergedYieldBand = [];
-	spyBand = [];
-	spyBand19 = [];
+	snpBand = [];
+	snpBand19 = [];
 	bands = [];
 	percentData: any[];
 	lenData: any[];
 	lenPercentData: any[];
 	percentLenData: any[];
-
 	sliderValue: number = 19;
 	sliderOptions: Options = {
 		floor: 1,
@@ -36,6 +35,7 @@ export class AppComponent implements OnInit {
 			}
 		},
 	};
+	checked = true;
 
 	constructor(private http: HttpClient) {}
 
@@ -48,19 +48,19 @@ export class AppComponent implements OnInit {
 			this.processNegativeYieldBand(this.data[1]);
 			this.mergeNegativeYieldBand();
 			this.processBearMarketBand(this.data[0], this.sliderValue / 100);
-			this.spyBand19 = [...this.spyBand];
-			this.spyBand19.splice(4, 1);
-			this.processScatterPlotData(this.mergedYieldBand, this.spyBand19);
+			this.snpBand19 = [...this.snpBand];
+			this.snpBand19.splice(4, 1);
+			this.processScatterPlotData(this.mergedYieldBand, this.snpBand19);
 		});
 	}
 
-	preprocessData([spy, yieldRate]) {
+	preprocessData([snp, yieldRate]) {
 		this.data = [[], []];
-		const len0 = spy.length;
+		const len0 = snp.length;
 		const len1 = yieldRate.length;
 		for (let i = len0 - 1; i >= 0; i--) {
-			if (spy[i].Close) {
-				this.data[0].push([new Date(spy[i].Date).getTime(), spy[i].Close]);
+			if (snp[i].Close) {
+				this.data[0].push([new Date(snp[i].Date).getTime(), snp[i].Close]);
 			}
 		}
 		for (let i = len1 - 1; i >= 0; i--) {
@@ -71,7 +71,6 @@ export class AppComponent implements OnInit {
 				]);
 			}
 		}
-		console.log(this.data);
 	}
 
 	processNegativeYieldBand(yieldArr: any[]) {
@@ -103,7 +102,7 @@ export class AppComponent implements OnInit {
 				this.yieldBand.push({ ...band });
 			}
 		}
-		this.bands = this.yieldBand.concat(this.spyBand);
+		this.bands = this.yieldBand.concat(this.snpBand);
 	}
 
 	mergeNegativeYieldBand() {
@@ -134,12 +133,12 @@ export class AppComponent implements OnInit {
 		this.yieldBand[change].label = true;
 	}
 
-	processBearMarketBand(spyArr: any[], threshold: number) {
-		this.spyBand = [];
-		let max = { date: spyArr[0][0], price: spyArr[0][1] };
-		let min = { date: spyArr[0][0], price: spyArr[0][1], len: 0 };
+	processBearMarketBand(snpArr: any[], threshold: number) {
+		this.snpBand = [];
+		let max = { date: snpArr[0][0], price: snpArr[0][1] };
+		let min = { date: snpArr[0][0], price: snpArr[0][1], len: 0 };
 		let days = 0;
-		for (const [date, price] of spyArr) {
+		for (const [date, price] of snpArr) {
 			days++;
 			if (price >= max.price) {
 				if (max.price * (1 - threshold) >= min.price) {
@@ -148,10 +147,10 @@ export class AppComponent implements OnInit {
 						from: max.date,
 						to: min.date,
 						drop: drop,
-						type: 'spy',
+						type: 'snp',
 						len: min.len,
 					};
-					this.spyBand.push(band);
+					this.snpBand.push(band);
 				}
 				days = 1;
 				max = { date: date, price: price };
@@ -160,34 +159,34 @@ export class AppComponent implements OnInit {
 				min = { date: date, price: price, len: days };
 			}
 		}
-		this.bands = this.yieldBand.concat(this.spyBand);
+		this.bands = this.yieldBand.concat(this.snpBand);
 	}
 
-	processScatterPlotData(yieldRate: any[], spy: any[]) {
+	processScatterPlotData(yieldRate: any[], snp: any[]) {
 		this.lenData = [];
 		this.percentData = [];
 		this.lenPercentData = [];
 		this.percentLenData = [];
-		for (let i = 0; i < spy.length; i++) {
+		for (let i = 0; i < snp.length; i++) {
 			const point1 = {
 				x: yieldRate[i].len,
-				y: spy[i].len,
-				time: new Date(spy[i].from).getFullYear(),
+				y: snp[i].len,
+				time: new Date(snp[i].from).getFullYear(),
 			};
 			const point2 = {
 				x: -yieldRate[i].min,
-				y: -parseFloat(spy[i].drop),
-				time: new Date(spy[i].from).getFullYear(),
+				y: -parseFloat(snp[i].drop),
+				time: new Date(snp[i].from).getFullYear(),
 			};
 			const point3 = {
 				x: yieldRate[i].len,
-				y: -parseFloat(spy[i].drop),
-				time: new Date(spy[i].from).getFullYear(),
+				y: -parseFloat(snp[i].drop),
+				time: new Date(snp[i].from).getFullYear(),
 			};
 			const point4 = {
 				x: -yieldRate[i].min,
-				y: spy[i].len,
-				time: new Date(spy[i].from).getFullYear(),
+				y: snp[i].len,
+				time: new Date(snp[i].from).getFullYear(),
 			};
 			this.lenData.push(point1);
 			this.percentData.push(point2);
@@ -199,5 +198,14 @@ export class AppComponent implements OnInit {
 	onSliderChange(event) {
 		this.sliderValue = event.value;
 		this.processBearMarketBand(this.data[0], this.sliderValue / 100);
+	}
+
+	onToggle() {
+		this.checked = !this.checked;
+		if (this.checked) {
+			this.bands = this.yieldBand.concat(this.snpBand);
+		} else {
+			this.bands = [];
+		}
 	}
 }

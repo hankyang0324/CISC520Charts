@@ -1,4 +1,3 @@
-import { formattedError } from '@angular/compiler';
 import {
 	AfterViewInit,
 	Component,
@@ -19,16 +18,16 @@ import * as Highcharts from 'highcharts/highstock';
 export class TschartComponent implements OnInit, AfterViewInit, OnChanges {
 	@ViewChild('tsChartContainer') chartContainer: ElementRef;
 	@Input() data: any[];
-	@Input() title = 'SPY & 10-2Year Treasury Yield';
-	@Input() yLabels = ['SPY', '10-2Y'];
+	@Input() title = 'S&P & 10-2Year Treasury Yield';
+	@Input() yLabels = ['S&P', '10-2Y'];
 	@Input() threshold = 0.19;
 	@Input() bands: any[];
 	chart: any;
-	spyColor = '#0066CC';
+	snpColor = '#0066CC';
 	yieldColor = '#EE0000';
 	option: any = {
 		chart: {
-			height: 650,
+			height: 600,
 		},
 		title: {
 			text: this.title,
@@ -40,13 +39,13 @@ export class TschartComponent implements OnInit, AfterViewInit, OnChanges {
 						return this.value + '$';
 					},
 					style: {
-						color: this.spyColor,
+						color: this.snpColor,
 					},
 				},
 				title: {
 					text: this.yLabels[0],
 					style: {
-						color: this.spyColor,
+						color: this.snpColor,
 					},
 				},
 				opposite: false,
@@ -148,7 +147,7 @@ export class TschartComponent implements OnInit, AfterViewInit, OnChanges {
 			this.processBands();
 			this.draw();
 		}
-		if (changes.bands && this.bands && this.bands.length) {
+		if (changes.bands && this.bands) {
 			this.processBands();
 		}
 	}
@@ -201,11 +200,11 @@ export class TschartComponent implements OnInit, AfterViewInit, OnChanges {
 						};
 					}
 					this.option.xAxis.plotBands.push(yieldBand);
-				} else if ((band.type = 'spy')) {
+				} else if ((band.type = 'S&P')) {
 					this.option.xAxis.plotBands.push({
 						from: band.from,
 						to: band.to,
-						color: this.spyColor + '50',
+						color: this.snpColor + '50',
 						borderWidth: 1,
 						label: {
 							useHTML: true,
@@ -219,14 +218,14 @@ export class TschartComponent implements OnInit, AfterViewInit, OnChanges {
 			}
 			if (this.chart) {
 				for (const band of oldBands) {
-					if (band.id.indexOf('spy') !== -1) {
-						this.chart.xAxis[0].removePlotBand(band.id);
-					}
+					// if (band.id.indexOf('S&P') !== -1) {
+					this.chart.xAxis[0].removePlotBand(band.id);
+					// }
 				}
 				for (const band of this.option.xAxis.plotBands) {
-					if (band.id.indexOf('spy') !== -1) {
-						this.chart.xAxis[0].addPlotBand(band);
-					}
+					// if (band.id.indexOf('S&P') !== -1) {
+					this.chart.xAxis[0].addPlotBand(band);
+					// }
 				}
 			}
 		}
