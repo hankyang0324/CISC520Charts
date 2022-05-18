@@ -1,9 +1,11 @@
 <div style="margin-left: 50px">
-	<div>Show Bands:</div>
-	<label class="switch">
-		<input type="checkbox" [checked]="checked" (change)="onToggleBands()" />
-		<span class="slider round"></span>
-	</label>
+	<div class="label">Show Bands:</div>
+	<div class="toggle">
+		<label class="switch">
+			<input type="checkbox" [checked]="checked" (change)="onToggleBands()" />
+			<span class="slider round"></span>
+		</label>
+	</div>
 	<div style="height: 100px; padding-top: 10px">
 		<div *ngIf="checked">S&P 500 Index Fell Greater Than:</div>
 		<div *ngIf="checked" style="width: 50%">
@@ -19,8 +21,9 @@
 	<app-tschart [data]="data" [bands]="bands"></app-tschart>
 </div>
 <div style="margin-left: 50px">
-	<div>Linear Regression:</div>
-	<div style="margin-bottom: 50px">
+	<div>Using 19% drop as the threshold</div>
+	<div class="label" style="margin: 10px 0 50px 0">Linear Regression:</div>
+	<div class="toggle" style="margin: 10px 0 50px 0">
 		<label class="switch">
 			<input
 				type="checkbox"
