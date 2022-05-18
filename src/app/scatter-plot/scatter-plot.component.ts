@@ -173,7 +173,7 @@ export class ScatterPlotComponent implements OnInit, AfterViewInit, OnChanges {
 				return `
 					<div>Bear Market Start Time: ${this.point.time}</div>
 					<div style="color: #EE0000">Max 10-2 Year Yield (Negative): ${this.x}%</div>
-					<div style="color: #0066CC">S&P Biggest Drop: ${this.y}%</div>
+					<div style="color: #0066CC">S&P Drop: ${this.y}%</div>
 				`;
 			};
 			this.option.xAxis.labels.formatter = function () {
@@ -187,7 +187,7 @@ export class ScatterPlotComponent implements OnInit, AfterViewInit, OnChanges {
 				return `
 					<div>Bear Market Start Time: ${this.point.time}</div>
 					<div style="color: #EE0000">Negative 10-2 Year: ${this.x} days</div>
-					<div style="color: #0066CC">S&P Biggest Drop: ${this.y}%</div>
+					<div style="color: #0066CC">S&P Drop: ${this.y}%</div>
 				`;
 			};
 			this.option.xAxis.labels.formatter = function () {
