@@ -1,55 +1,82 @@
-<div>Show Bands:</div>
-<label class="switch">
-	<input type="checkbox" [checked]="checked" (change)="onToggle()" />
-	<span class="slider round"></span>
-</label>
-<div style="height: 100px; padding-top: 10px">
-	<div *ngIf="checked">S&P 500 Index Fell Greater Than:</div>
-	<div *ngIf="checked" style="width: 50%">
-		<ngx-slider
-			[value]="sliderValue"
-			[options]="sliderOptions"
-			(userChangeEnd)="onSliderChange($event)"
-		></ngx-slider>
+<div style="margin-left: 50px">
+	<div>Show Bands:</div>
+	<label class="switch">
+		<input type="checkbox" [checked]="checked" (change)="onToggleBands()" />
+		<span class="slider round"></span>
+	</label>
+	<div style="height: 100px; padding-top: 10px">
+		<div *ngIf="checked">S&P 500 Index Fell Greater Than:</div>
+		<div *ngIf="checked" style="width: 50%">
+			<ngx-slider
+				[value]="sliderValue"
+				[options]="sliderOptions"
+				(userChangeEnd)="onSliderChange($event)"
+			></ngx-slider>
+		</div>
 	</div>
 </div>
 <div style="margin-bottom: 100px">
 	<app-tschart [data]="data" [bands]="bands"></app-tschart>
 </div>
+<div style="margin-left: 50px">
+	<div>Linear Regression:</div>
+	<div style="margin-bottom: 50px">
+		<label class="switch">
+			<input
+				type="checkbox"
+				[checked]="showRegression"
+				(change)="showRegression = !showRegression"
+			/>
+			<span class="slider round"></span>
+		</label>
+	</div>
+</div>
 <div class="scatter">
 	<app-scatter-plot
 		[data]="lenData"
+		[regression]="regressionData[0]"
+		[showRegression]="showRegression"
 		title="S&P Bear Market & Negative 10-2Year Treasury Yield Total Trade Days"
 		xLabel="Negative 10-2Year Yield (day)"
 		yLabel="S&P Bear Market (day)"
 		unit="day"
 	></app-scatter-plot>
+	<div *ngIf="showRegression" class="fnc">{{ regressionFnc[0] }}</div>
 </div>
 <div class="scatter">
 	<app-scatter-plot
 		[data]="percentData"
+		[regression]="regressionData[1]"
+		[showRegression]="showRegression"
 		title="S&P Biggest Drop & Max 10-2Year Treasury Yield (Negative)"
 		xLabel="Max 10-2Year Yield (Negative)"
 		yLabel="S&P Biggest Drop"
 		unit="percentage"
 	></app-scatter-plot>
+	<div *ngIf="showRegression" class="fnc">{{ regressionFnc[1] }}</div>
 </div>
 <div class="scatter">
 	<app-scatter-plot
 		[data]="lenPercentData"
+		[regression]="regressionData[2]"
+		[showRegression]="showRegression"
 		title="S&P Biggest Drop & Negative 10-2Year Treasury Yield Total Trade Days"
 		xLabel="Negative 10-2Year Yield (day)"
 		yLabel="S&P Biggest Drop"
 		unit="day-percentage"
 	></app-scatter-plot>
+	<div *ngIf="showRegression" class="fnc">{{ regressionFnc[2] }}</div>
 </div>
 <div class="scatter">
 	<app-scatter-plot
 		[data]="percentLenData"
+		[regression]="regressionData[3]"
+		[showRegression]="showRegression"
 		title="S&P Bear Market Total Trade Days & Max 10-2Year Treasury Yield (Negative)"
 		xLabel="Max 10-2Year Yield (Negative)"
 		yLabel="S&P Bear Market (day)"
 		unit="percentage-day"
 	></app-scatter-plot>
+	<div *ngIf="showRegression" class="fnc">{{ regressionFnc[3] }}</div>
 </div>
 <router-outlet></router-outlet>

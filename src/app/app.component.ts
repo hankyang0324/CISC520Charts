@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
 import { Options, LabelType } from '@angular-slider/ngx-slider';
+import { SLR } from 'ml-regression';
 
 @Component({
 	selector: 'app-root',
@@ -20,6 +21,10 @@ export class AppComponent implements OnInit {
 	lenData: any[];
 	lenPercentData: any[];
 	percentLenData: any[];
+	regression = [];
+	regressionData = [];
+	regressionFnc = ['', '', '', ''];
+	showRegression = true;
 	sliderValue: number = 19;
 	sliderOptions: Options = {
 		floor: 1,
@@ -47,10 +52,14 @@ export class AppComponent implements OnInit {
 			this.preprocessData(data);
 			this.processNegativeYieldBand(this.data[1]);
 			this.mergeNegativeYieldBand();
-			this.processBearMarketBand(this.data[0], this.sliderValue / 100);
+			this.processBearMarketBand(this.data[0], 0.19);
 			this.snpBand19 = [...this.snpBand];
 			this.snpBand19.splice(4, 1);
 			this.processScatterPlotData(this.mergedYieldBand, this.snpBand19);
+			this.processLinerRegression(this.lenData, 0, 250);
+			this.processLinerRegression(this.percentData, 1, 0.6);
+			this.processLinerRegression(this.lenPercentData, 2, 250);
+			this.processLinerRegression(this.percentLenData, 3, 0.6);
 		});
 	}
 
@@ -195,12 +204,32 @@ export class AppComponent implements OnInit {
 		}
 	}
 
+	processLinerRegression(data, index, to) {
+		this.regression[index] = this.linearRegression(data);
+		this.regressionFnc[index] = this.regression[index].toString(3);
+		this.regressionData[index] = [
+			{ x: 0, y: this.regression[index].predict(0) },
+			{ x: to, y: this.regression[index].predict(to) },
+		];
+	}
+
+	linearRegression(data: { x: number; y: number }[]) {
+		const inputs = [];
+		const outputs = [];
+		for (const point of data) {
+			inputs.push(point.x);
+			outputs.push(point.y);
+		}
+		const regression = new SLR(inputs, outputs);
+		return regression;
+	}
+
 	onSliderChange(event) {
 		this.sliderValue = event.value;
 		this.processBearMarketBand(this.data[0], this.sliderValue / 100);
 	}
 
-	onToggle() {
+	onToggleBands() {
 		this.checked = !this.checked;
 		if (this.checked) {
 			this.bands = this.yieldBand.concat(this.snpBand);
