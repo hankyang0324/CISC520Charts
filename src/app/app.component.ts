@@ -204,15 +204,6 @@ export class AppComponent implements OnInit {
 		}
 	}
 
-	processLinerRegression(data, index, to) {
-		this.regression[index] = this.linearRegression(data);
-		this.regressionFnc[index] = this.regression[index].toString(3);
-		this.regressionData[index] = [
-			{ x: 0, y: this.regression[index].predict(0) },
-			{ x: to, y: this.regression[index].predict(to) },
-		];
-	}
-
 	linearRegression(data: { x: number; y: number }[]) {
 		const inputs = [];
 		const outputs = [];
@@ -222,6 +213,15 @@ export class AppComponent implements OnInit {
 		}
 		const regression = new SLR(inputs, outputs);
 		return regression;
+	}
+
+	processLinerRegression(data, index, to) {
+		this.regression[index] = this.linearRegression(data);
+		this.regressionFnc[index] = this.regression[index].toString(3);
+		this.regressionData[index] = [
+			{ x: 0, y: this.regression[index].predict(0) },
+			{ x: to, y: this.regression[index].predict(to) },
+		];
 	}
 
 	onSliderChange(event) {
